@@ -212,7 +212,7 @@ REALISATIONS = [
       'The trade\'s vocabulary rather than generic columns']),
     ('prestige', 'Maisons de prestige',
      'https://anirudhatalmale6-alt.github.io/maisons-de-prestige/',
-     ('prestige', 'tests-prestige.py'), 108,
+     ('prestige', 'tests-prestige.py'), 109,
      'Site noir, cinq etoiles. Contrats de gestion, honoraires de base et '
      'd\'incitation sur deux assiettes differentes, apport du groupe.',
      'A black site, five stars. Management contracts, base and incentive '
@@ -258,12 +258,34 @@ VARIABLES = [
      'costs more than a site looked after.'),
 ]
 
+# La DEVISE est celle du client, pas la mienne. Elle est ecrite ici une
+# seule fois, et le site de prestige porte exactement la meme chaine — un
+# controle compare les deux fichiers. Une devise qui differe d'un site a
+# l'autre n'est plus une devise, c'est deux slogans.
+#
+# Elle a change le 28 aout : « Equilibrium, Equity and Light » -> celle-ci,
+# a sa demande (« change la devise / mes sites impacte le monde »). Je la
+# pose telle qu'il l'a formulee et je ne la reecris pas : une devise se
+# choisit, elle ne se redige pas a la place de quelqu'un.
+DEVISE_FR = 'Mes sites impactent le monde.'
+DEVISE_EN = 'My sites impact the world.'
+
 FONDATEUR = {
     'nom': 'Hakim Adjaoudi',
     'role_fr': 'Fondateur, JNCORP INC.',
     'role_en': 'Founder, JNCORP INC.',
-    'devise': 'Equilibrium, Equity and Light',
+    'devise_fr': DEVISE_FR,
+    'devise_en': DEVISE_EN,
 }
+
+# Le bandeau defilant de l'accueil. DECORATIF : `aria-hidden`, et rien ne s'y
+# lit qui ne soit ecrit ailleurs sur la page. Il s'arrete completement sous
+# « mouvement reduit ».
+BANDEAU = [
+    'Annuaires filtrables', 'Boutiques', 'Espaces prives', 'Integrations',
+    'Multilingue', 'Migrations', 'Performance', 'Accessibilite',
+    'Controles automatises',
+]
 
 # Ce qui reste a trancher avec le client avant la mise en ligne reelle.
 A_TRANCHER = [

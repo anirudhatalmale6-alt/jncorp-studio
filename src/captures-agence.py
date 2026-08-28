@@ -35,13 +35,22 @@ with sync_playwright() as p:
     pg = nav.new_page(viewport={'width': 1280, 'height': 820})
 
     def prise(nom):
+        # Le curseur personnalise suit le pointeur : fige dans une capture,
+        # il se lit comme un defaut d'affichage. On l'eteint juste avant la
+        # prise plutot que de deplacer la souris — un coin reste un coin
+        # visible.
+        pg.evaluate("()=>{var c=document.querySelector('.curseur');"
+                    "if(c) c.classList.remove('actif');}")
+        pg.wait_for_timeout(150)
         pg.screenshot(path=os.path.join(ICI, nom))
         print(nom)
 
     pg.goto(base + 'index.html', wait_until='networkidle')
-    pg.wait_for_timeout(350)
+    pg.wait_for_timeout(900)
     prise('ag-1-accueil.png')
 
+    # L'index s'ouvre pour la capture : une liste toute fermee ne montre pas
+    # ce qu'elle fait.
     for cible, nom in (('#services', 'ag-2-services.png'),
                        ('#methode', 'ag-3-methode.png'),
                        ('#technique', 'ag-4-technique.png'),
@@ -51,8 +60,18 @@ with sync_playwright() as p:
                        ('#contact', 'ag-8-contact.png')):
         pg.evaluate("s=>document.querySelector(s)"
                     ".scrollIntoView({block:'start'})", cible)
-        pg.wait_for_timeout(400)
+        pg.wait_for_timeout(1000)
         prise(nom)
+
+    pg.evaluate("()=>document.querySelector('#services')"
+                ".scrollIntoView({block:'start'})")
+    pg.wait_for_timeout(500)
+    pg.locator('.ligne-idx button').nth(1).click()
+    pg.wait_for_timeout(700)
+    pg.evaluate("()=>document.querySelector('.ligne-idx[data-ouvert=oui]')"
+                ".scrollIntoView({block:'center'})")
+    pg.wait_for_timeout(500)
+    prise('ag-12-index-ouvert.png')
 
     pg.goto(base + 'realisations.html', wait_until='networkidle')
     pg.wait_for_timeout(350)
